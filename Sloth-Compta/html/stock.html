@@ -1,0 +1,38 @@
+<html>
+    <body>
+
+        <h1>StockFromSeller</h1>
+        <form action="/api/stock/StockFromSeller" method="GET">
+            Id Seller:<input type="text" name="idSeller"><br>
+            <button type="submit">Get Stock</button>
+        </form>
+
+        <h1>StockFromSellerOfModel</h1>
+        <form action="/api/stock/StockFromSellerOfModel" method="GET">
+            Id Seller:<input type="text" name="idSeller"><br>
+            Id Model:<input type="text" name="idModel"><br>
+            <button type="submit">Get Stock</button>
+        </form>
+
+        <h1>Add Stock</h1>
+        <form action="/api/stock/addStock" method="POST">
+            Seller Id:<input type="text" name="idSeller"><br>
+            Model Id:<input type="text" name="idModel"><br>
+            Size :<input type="text" name="size"><br>
+            Quantity:<input type="text" name="quantity"><br>
+            <button type="submit">Add Stock</button>
+        </form>
+
+        <h1>Get All Stock</h1>
+        <form action="/api/stock/allStock" method="GET">
+            <button type="submit">Get All Stock</button>
+        </form>
+
+        <h1>Get All Current Stock</h1>
+        <form action="/api/stock/allCurrentStock" method="GET">
+            <button type="submit">Get All Stock</button>
+        </form>
+
+
+    </body>
+</html>
