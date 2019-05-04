@@ -11,13 +11,7 @@ const home = require('./routes/home');
 const mysql = require('mysql');
 const bodyParser = require('body-parser')
 const app = express();
-
-let con = mysql.createConnection({
-	host: "10.194.69.15",
-	user: "A10",
-	password: "6Z58pH0taK7RYXqV",
-	database: "A10",
-});
+const con =  require('./routes/connection.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extend: true}));

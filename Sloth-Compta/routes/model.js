@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql');
-
-let con = mysql.createConnection({
-	host: "10.194.69.15",
-	user: "A10",
-	password: "6Z58pH0taK7RYXqV",
-	database: "A10",
-});
+const con =  require('./connection.js');
 
 router.get('/',(req,res)=>{
-	res.sendFile('C:/Users/Paul Lucas/Desktop/Sloth-Compta/html/model.html');
+	res.sendFile('C:/Users/Paul Lucas/Documents/ProjetTransversal/Sloth-Compta/html/model.html');
   });
 
 router.post('/addModel', function (req, res) {
