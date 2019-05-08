@@ -15,7 +15,7 @@ router.post('/addPayment', function (req, res) {
 });
 
 router.get('/allPayment', function (req, res) {
-	con.query('SELECT * FROM Payment', (err, results) => {
+	con.query('SELECT Seller.LastName, Payment.* FROM Payment, Seller Where Seller.Id = Payment.IdSeller', (err, results) => {
 		if(err) throw err;
 		res.send(JSON.stringify(results));
 	});

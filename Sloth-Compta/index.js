@@ -12,7 +12,13 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser')
 const app = express();
 const con =  require('./routes/connection.js');
+var cors = require('cors');
 
+var corsOptions = {
+    origin: '*',
+    credentials: true };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extend: true}));
 app.use(express.static('public'));
@@ -23,12 +29,12 @@ app.use('/api/client',client);
 app.use('/api/expense',expense);
 app.use('/api/payment',payment);
 app.use('/api/stock',stock);
-app.use('/',home);
+//app.use('/',home);
 
 con.connect(function(err) {
     if (err) throw err;
     console.log('Connected!');
   });
 
-const port = process.env.PORT || 3000;
+const port = 3001;
 app.listen(port,()=> console.log(`listening to port ${port}`));

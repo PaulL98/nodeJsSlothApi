@@ -7,7 +7,7 @@ router.get('/',(req,res)=>{
   });
 
 router.get('/allExpense', function (req, res) {
-	con.query('SELECT * FROM Expense', (err, results) => {
+	con.query('SELECT Seller.LastName, Expense.* FROM Expense, Seller Where Seller.Id = Expense.IdSeller', (err, results) => {
 		if(err) throw err;
 		res.send(JSON.stringify(results));
 	});
