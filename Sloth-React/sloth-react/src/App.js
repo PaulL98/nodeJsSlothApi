@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import Payment from './Payment/Payment';
+import PaymentForm from './Payment/PaymentForm';
 import Expense from './Expense/Expense';
 import Header from './Header/Header';
+import Model from './Model/Model';
+import SellerCompta from './Compta/SellerCompta';
+import ModelCompta from './Compta/ModelCompta';
 import Sale from './Sale/Sale';
 import axios from 'axios';
 
@@ -11,6 +15,9 @@ class App extends Component {
     payment : [],
     expense : [],
     sale : [],
+    model : [],
+    comptaSeller : [],
+    comptaModel : [],
     currentState : []
   }
 
@@ -18,23 +25,31 @@ class App extends Component {
     this.getAllPayment();
     this.getAllExpense();
     this.getAllSale();
+    this.getAllModel();
+    this.getSellerCompta();
+    this.getModelCompta();
    }
 
    setCurrentState = (state) =>{
      this.setState({currentState : [state]})
    }
 
+   handleSubmit = () =>{
+    axios.post('http://localhost:3001/api/payment/addPayment');     
+   }
+
 render(){
   return (
     <div className="App">
-      <h1>Sloth Compta</h1>
+      <h1> Compta</h1>
       <Header
       Payment={() => this.setCurrentState(this.state.payment)}
       Expense={() => this.setCurrentState(this.state.expense)}
-      Sale={() => this.setCurrentState(this.state.sale)}/>
-      
+      Sale={() => this.setCurrentState(this.state.sale)}
+      Model={() => this.setCurrentState(this.state.model)}
+      SellerCompta={() => this.setCurrentState(this.state.comptaSeller)}
+      ModelCompta={() => this.setCurrentState(this.state.comptaModel)}/>
       {this.state.currentState}
-      
     </div>
   );
 }
@@ -59,6 +74,29 @@ getAllPayment = () => {
   {state}
   </table>;
     this.setState({payment : state});
+  });
+ }
+
+ getAllModel = () => {
+  axios.get('http://localhost:3001/api/model/allModel').then( response => {
+    this.setState({model : response.data.map((model, index) => {
+      return( <Model
+       Name={model.Name}
+       TotalProduction={model.TotalProduction}
+       TotalPrice={model.TotalPrice}
+       key={model.Id}
+     />);
+     })})
+  }).then( () => {
+    let state = this.state.model.slice();
+    state = <table id="customers"> <tr>
+    <th>Name</th>
+    <th>Total Production</th> 
+    <th>Total Price</th> 
+  </tr>
+  {state}
+  </table>;
+    this.setState({model : state});
   });
  }
 
@@ -115,6 +153,56 @@ getAllPayment = () => {
   {state}
   </table>;
     this.setState({expense : state});
+  });
+ }
+
+ getSellerCompta = () => {
+  axios.get('http://localhost:3001/api/compta/sellerCompta').then( response => {console.log(response)});
+  axios.get('http://localhost:3001/api/compta/sellerCompta').then( response => {
+    this.setState({comptaSeller : response.data.map((compta, index) => {
+      return( <SellerCompta
+       Name={compta.Name}
+       LastName={compta.LastName}
+       SumSale={compta.SumSale}
+       SumExpense={compta.SumExpense}
+       SumPayment={compta.SumPayment}
+       key={compta.Id}
+     />);
+     })})
+     console.log(this.state.comptaSeller);
+  }).then( () => {
+    let state = this.state.comptaSeller.slice();
+    state = <table id="customers"> <tr>
+    <th>Name</th>
+    <th>Last Name</th>
+    <th>Sum</th> 
+  </tr>
+  {state}
+  </table>;
+    this.setState({comptaSeller : state});
+  });
+ }
+
+ getModelCompta = () => {
+  axios.get('http://localhost:3001/api/compta/modelCompta').then( response => {console.log(response)});
+  axios.get('http://localhost:3001/api/compta/modelCompta').then( response => {
+    this.setState({comptaModel : response.data.map((compta, index) => {
+      return( <ModelCompta
+       Name={compta.Name}
+       Income={compta.Income}
+       key={compta.Id}
+     />);
+     })})
+     console.log(this.state.comptaModel);
+  }).then( () => {
+    let state = this.state.comptaModel.slice();
+    state = <table id="customers"> <tr>
+    <th>Name</th>
+    <th>Income</th>
+  </tr>
+  {state}
+  </table>;
+    this.setState({comptaModel : state});
   });
  }
 

@@ -8,6 +8,7 @@ const expense =  require('./routes/expense');
 const payment =  require('./routes/payment');
 const stock =  require('./routes/stock');
 const home = require('./routes/home');
+const compta  = require('./routes/compta');
 const mysql = require('mysql');
 const bodyParser = require('body-parser')
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/client',client);
 app.use('/api/expense',expense);
 app.use('/api/payment',payment);
 app.use('/api/stock',stock);
+app.use('/api/compta',compta);
 //app.use('/',home);
 
 con.connect(function(err) {
