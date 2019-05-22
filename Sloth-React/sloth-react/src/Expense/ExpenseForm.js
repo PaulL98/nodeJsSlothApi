@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SellerOption from '../Seller/SellerOption';
 
-class AddPayment extends Component {
+class AddExpense extends Component {
     state = {
         idSeller: '',
         sum: '',
         sellers : <SellerOption/>,
         description: ''
     }
-
+    
     postDataHandler = () => {
         const data = {
             idSeller: this.state.idSeller,
             sum: this.state.sum,
             description: this.state.description
         };
-        axios.post('http://localhost:3001/api/payment/addPayment', data)
+        axios.post('http://localhost:3001/api/expense/addExpense', data)
             .then(response => {
                 console.log(response);
                 this.setState({idSeller: ''});
@@ -30,7 +30,7 @@ class AddPayment extends Component {
             <div>
                 <h1>Add a Post</h1>
                 <label>idSeller</label>
-               <select value={this.state.idSeller} onChange={(event) => this.setState({idSeller: event.target.value})}>
+               <select value={this.state.idSeller}  onChange={(event) => this.setState({idSeller: event.target.value})}>
                   {this.state.sellers}
                 </select>
                 <label>Sum</label>
@@ -43,4 +43,4 @@ class AddPayment extends Component {
     }
 }
 
-export default AddPayment;
+export default AddExpense;
