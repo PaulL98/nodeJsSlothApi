@@ -14,12 +14,19 @@ router.post('/addClient', function (req, res) {
  });
  
  router.get('/allClient', function (req, res) {
-	getAllClient() 
+	module.exports.getAllClient() 
 	.then(result => res.send(result))
 	.catch(err => res.send('Error', err.message));
 });
 
-function getAllClient(){
+router.post('/client', function (req, res) {
+	console.log('client to get',req.body);
+	module.exports.getClient(req.body.name, req.body.lastName) 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
+});
+
+module.exports.getAllClient = function(){
 	return new Promise((resolve, reject)=>{
 		con.query('SELECT * FROM Client', (err, results) => {
 			if(err) throw err;
@@ -28,7 +35,7 @@ function getAllClient(){
 	  });
 }
 
-function getClient(name, lastName){
+module.exports.getClient =  function(name, lastName){
 	return new Promise((resolve, reject)=>{
 		con.query('SELECT * FROM Client Where Name = ? && LastName = ?',[name, lastName], (err, results) => {
 			if(err) throw err;
@@ -39,7 +46,7 @@ function getClient(name, lastName){
 }
 
 function addClient(postData){
-	return getClient(postData.name, postData.lastName)
+	return module.exports.getClient(postData.name, postData.lastName)
 	.then(result => insterClient(postData,result))
 	.catch(err => console.log('Error', err.message));
 }
@@ -67,4 +74,4 @@ function isEmpty(obj) {
 	return true;
 }
 
-module.exports = router;
+module.exports.router = router;

@@ -7,21 +7,37 @@ router.get('/',(req,res)=>{
 });
 
 router.get('/allStock', function (req, res) {
-	con.query('SELECT Seller.LastName, Seller.Name, Stock.Size, Stock.Quantity, Model.Name FROM Seller, Stock, Model Where Stock.IdSeller = Seller.id && Stock.IdModel = Model.id ORDER BY Seller.LastName , Model.id , Stock.Size DESC', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllStock() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
+
+module.exports.getAllStock = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT Seller.LastName, Seller.Name, Stock.Size, Stock.Quantity, Model.Name FROM Seller, Stock, Model Where Stock.IdSeller = Seller.id && Stock.IdModel = Model.id ORDER BY Seller.LastName , Model.id , Stock.Size DESC', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
 
 router.get('/allCurrentStock', function (req, res) {
-	con.query('SELECT Seller.LastName, Seller.Name, Stock.Size, COALESCE(Stock.Quantity - (SELECT SUM(Sale.Quantity) From Sale WHERE Seller.id = Sale.IdSeller && Sale.IdStock = Stock.Id ), Stock.Quantity) as Quantity , Model.Name FROM Seller, Stock, Model Where Stock.IdSeller = Seller.id && Stock.IdModel = Model.id ORDER BY Seller.LastName , Model.id , Stock.Size DESC', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllCurrentStock() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
 
-router.get('/StockFromSeller', function (req, res) {
-	con.query('SELECT * FROM Stock WHERE idSeller=?', [req.query.idSeller], function (error, results, fields) {
+module.exports.getAllCurrentStock = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT Seller.LastName, Seller.Name, Stock.Size, COALESCE(Stock.Quantity - (SELECT SUM(Sale.Quantity) From Sale WHERE Seller.id = Sale.IdSeller && Sale.IdStock = Stock.Id ), Stock.Quantity) as Quantity , Model.Name FROM Seller, Stock, Model Where Stock.IdSeller = Seller.id && Stock.IdModel = Model.id ORDER BY Seller.LastName , Model.id , Stock.Size DESC', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
+
+router.get('/stockFromSeller', function (req, res) {
+	con.query('SELECT Stock.*, Model.Name FROM Stock, Model WHERE idSeller=? && Model.Id = Stock.IdModel', [req.query.idSeller], function (error, results, fields) {
 	 if (error) throw error;
 	   res.send(results);
 	 });
@@ -69,7 +85,7 @@ function updateStock(postData,res){
 	});
 }
 
-function getStock(size, model, seller){
+module.exports.getStock = function(size, model, seller){
 	return new Promise((resolve, reject)=>{
 		con.query('SELECT * FROM Stock Where IdSeller = ? && IdModel = ? && Size = ?',[seller, model, size], (err, results) => {
 			if(err) throw err;
@@ -79,4 +95,4 @@ function getStock(size, model, seller){
 	});
 }
 
-module.exports = router;
+module.exports.router = router;

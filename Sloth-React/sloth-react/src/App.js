@@ -10,6 +10,7 @@ import Model from './Model/Model';
 import Compta from './Compta/Compta';
 import Stock from './Stock/Stock';
 import Sale from './Sale/Sale';
+import AddSale from './Sale/SaleForm';
 
 
 class App extends Component {
@@ -22,7 +23,8 @@ class App extends Component {
     compta : <Compta/>,
     addPayment : <AddPayment/>,
     addExpense : <AddExpense/>,
-    AddModel : <AddModel/>,
+    addModel : <AddModel/>,
+    addSale : <AddSale/>,
     currentState : []
   }
 
@@ -43,7 +45,8 @@ render(){
       Compta={() => this.setCurrentState(this.state.compta)}
       AddPayment={() => this.setCurrentState(this.state.addPayment)}
       AddExpense={() => this.setCurrentState(this.state.addExpense)}
-      AddModel={() => this.setCurrentState(this.state.AddModel)}/>
+      AddModel={() => this.setCurrentState(this.state.addModel)}
+      AddSale={() => this.setCurrentState(this.state.addSale)}/>
       {this.state.currentState}
       
     </div>

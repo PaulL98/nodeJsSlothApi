@@ -15,10 +15,18 @@ router.post('/addPayment', function (req, res) {
 });
 
 router.get('/allPayment', function (req, res) {
-	con.query('SELECT Seller.LastName, Payment.* FROM Payment, Seller Where Seller.Id = Payment.IdSeller', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllPayment() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
 
-module.exports = router;
+module.exports.getAllPayment = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT Seller.LastName, Payment.* FROM Payment, Seller Where Seller.Id = Payment.IdSeller', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
+
+module.exports.router = router;

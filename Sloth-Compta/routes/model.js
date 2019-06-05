@@ -15,10 +15,9 @@ router.post('/addModel', function (req, res) {
 });
 
 router.get('/allModel', function (req, res) {
-	con.query('SELECT * FROM Model', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllModel() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
 
 router.get('/modelId', function (req, res) {
@@ -28,4 +27,14 @@ router.get('/modelId', function (req, res) {
 	 });
  });
 
-module.exports = router;
+
+ module.exports.getAllModel = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT * FROM Model', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
+
+module.exports.router = router;

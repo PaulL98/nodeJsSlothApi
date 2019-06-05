@@ -16,6 +16,7 @@ const header = (props) => {
                <td><button onClick={props.AddPayment}>Add Payment</button></td>
                <td><button onClick={props.AddExpense}>Add Expense</button></td>
                <td><button onClick={props.AddModel}>Add Model</button></td>
+               <td><button onClick={props.AddSale}>Add Sale</button></td>
            </tr>
         </table>
       </div>

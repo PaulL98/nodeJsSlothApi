@@ -16,10 +16,19 @@ router.post('/addSeller', function (req, res) {
  });
 
 router.get('/allSeller', function (req, res) {
-	con.query('SELECT * FROM Seller', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllSeller() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
 
-module.exports = router;
+module.exports.getAllSeller = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT * FROM Seller', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
+
+
+module.exports.router = router;

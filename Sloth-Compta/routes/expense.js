@@ -1,4 +1,5 @@
-const express = require('express');
+const express =
+ require('express');
 const router = express.Router();
 const con =  require('./connection.js');
 
@@ -7,10 +8,9 @@ router.get('/',(req,res)=>{
   });
 
 router.get('/allExpense', function (req, res) {
-	con.query('SELECT Seller.LastName, Expense.* FROM Expense, Seller Where Seller.Id = Expense.IdSeller', (err, results) => {
-		if(err) throw err;
-		res.send(JSON.stringify(results));
-	});
+	module.exports.getAllExpense() 
+	.then(result => res.send(result))
+	.catch(err => res.send('Error', err.message));
 })
 
 router.post('/addExpense', function (req, res) {
@@ -21,4 +21,13 @@ router.post('/addExpense', function (req, res) {
 	 });
 });
 
-module.exports = router;
+module.exports.getAllExpense = function(){
+	return new Promise((resolve, reject)=>{
+		con.query('SELECT Seller.LastName, Expense.* FROM Expense, Seller Where Seller.Id = Expense.IdSeller', (err, results) => {
+			if(err) throw err;
+			resolve(JSON.stringify(results));
+		});
+	  });
+}
+
+module.exports.router = router;
